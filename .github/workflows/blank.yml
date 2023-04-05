@@ -1,4 +1,4 @@
-name: Build on ubuntu-latest and Release Package
+name: Build and Release Package
 
 on:
   push:
@@ -17,34 +17,14 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install makepkg
+        sudo apt-get install -y docker.io
 
-    - name: Build package
+    - name: Build Docker image
       run: |
-        makepkg -srif
+        docker build -t arch-build .
 
-    - name: Create release
-      id: create_release
-      uses: actions/create-release@v1
+    - name: Build package and create release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        body: |
-          Release of the package.
-        draft: false
-        prerelease: true
-
-    - name: Upload artifacts
-      id: upload-artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: package
-        path: '*.pkg.tar.zst'
-    - name: Get artifact URL
-      id: artifact_url
       run: |
-        echo "::set-output name=URL::$(curl -s -X POST -H \"Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}\" https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/artifacts | jq -r '.artifacts[0].archive_download_url')"
-        env:
-          RUN_ID: ${{ github.run_id }}
+        docker run --rm -v "$(pwd):/src" arch-build /bin/sh -c "cd /src && makepkg -srif && bash /src/.github/scripts/create_release.sh"
