@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file dockerfile --tag archlinux:$(date +%s) --build-arg PKGBUILD_FILE=PKGBUILD
+      run: docker build . --file dockerfile --build-arg PKGBUILD_FILE=PKGBUILD
