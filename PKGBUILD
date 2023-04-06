@@ -44,7 +44,7 @@ build() {
     -D platforms=auto \
     -D egl-native-platform=auto \
     -D gallium-drivers=virgl,swrast,i915,iris,crocus,zink \
-    -D vulkan-drivers=auto,intel,intel_hasvk,swrast,virtio-experimental \
+    -D vulkan-drivers=intel,intel_hasvk,swrast,virtio-experimental \
     -D vulkan-layers=device-select,intel-nullhw,overlay \
     -D shader-cache=auto \
     -D shader-cache-default=false \
