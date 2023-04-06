@@ -1,14 +1,22 @@
 FROM archlinux/base
 
-RUN pacman -Syu --noconfirm && \
-    pacman -S --noconfirm base-devel git
+RUN pacman -Syu --noconfirm \
+    && pacman -S --noconfirm \
+       base-devel \
+       git \
+       wget \
+       jq \
+    && pacman -Scc --noconfirm
 
-RUN useradd -m user
-WORKDIR /home/user
+COPY PKGBUILD /PKGBUILD
+
+RUN useradd -m -G wheel user \
+    && echo "%wheel ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/user \
+    && chown -R user:user /PKGBUILD
 
 USER user
 
-RUN git clone https://github.com/DereckySany/make_archlinux_builldpkg.git
-WORKDIR /home/user/make_archlinux_builldpkg
+RUN cd /PKGBUILD \
+    && makepkg --syncdeps --noconfirm
 
-CMD makepkg -srif
+CMD ["/bin/bash"]
