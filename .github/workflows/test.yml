@@ -1,0 +1,21 @@
+name: build
+
+on: [push, pull_request, workflow_dispatch]
+ 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Makepkg Build and Check
+      - uses: edlanglois/pkgbuild-action@v1.1.8
+        with:
+          # Relative path to directory containing the PKGBUILD file.
+          pkgdir: $GITHUB_WORKSPACE/.github/workflows/PKGBUILD
+          # Support AUR dependencies if nonempty.
+          aurDeps: 'python-mako' 'libxml2' 'libx11' 'xorgproto' 'libdrm' 'libxshmfence' 'libxxf86vm'
+             'libxdamage' 'libvdpau' 'libva' 'wayland' 'wayland-protocols' 'zstd' 'elfutils' 'llvm'
+             'libomxil-bellagio' 'libclc' 'clang' 'libglvnd' 'libunwind' 'lm_sensors' 'libxrandr'
+             'systemd' 'valgrind' 'glslang' 'vulkan-icd-loader' 'directx-headers' 'cmake' 'meson'
+          # Additional arguments to pass to makepkg.
+          makepkgArgs: "-march=native -mtune=native -m3dnow -m3dnowa -mfpmath=sse -Os"
