@@ -3,6 +3,8 @@ name: Build and Test
 on:
   create:
   delete:
+  push:
+  pull_request:
   merge_group:
   pull_request_target:
     types: branches,tags
@@ -11,7 +13,7 @@ on:
   workflow_dispatch:
  
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
     container:
       image: archlinux
@@ -19,19 +21,21 @@ jobs:
       volumes:
         - /sys/fs/cgroup:/sys/fs/cgroup
     steps:
-    - name: Checkout code
-    - uses: actions/checkout@v2
-    - name: Build Arch Linux package
-      uses: ./
-      with:
-        BUILD_SCRIPT: extra-x86_64-build
-        PKGBUILD: $GITHUB_WORKSPACE/PKGBUILD
-        OUTDIR: $HOME/arch-packages
-    - name: Build the package again
-      uses: ./
-      with:
-        BUILD_SCRIPT: extra-x86_64-build
-        PKGBUILD: $GITHUB_WORKSPACE/PKGBUILD
-        OUTDIR: $HOME/arch-packages2
+      - name: Checkout code
+      - uses: actions/checkout@v2
+
+      - name: Build Arch Linux package
+        uses: ./
+        with:
+          BUILD_SCRIPT: extra-x86_64-build
+          PKGBUILD: $GITHUB_WORKSPACE/PKGBUILD
+          OUTDIR: $HOME/arch-packages
+
+      - name: Build the package again
+        uses: ./
+        with:
+          BUILD_SCRIPT: extra-x86_64-build
+          PKGBUILD: $GITHUB_WORKSPACE/PKGBUILD
+          OUTDIR: $HOME/arch-packages2
 
 # See: https://github.com/taotieren/deepin-wine-qq-arch/blob/master/.github/workflows/main.yml
