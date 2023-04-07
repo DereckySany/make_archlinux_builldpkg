@@ -1,16 +1,24 @@
-name: build
+name: Make ArchLinux Buildpkg
 
-on: [push, pull_request, workflow_dispatch]
- 
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Makepkg Build and Check
-        uses: edlanglois/pkgbuild-action@v1.1.8
-        with:
-          # Relative path to directory containing the PKGBUILD file.
-          pkgdir: $GITHUB_WORKSPACE/.github/workflows/PKGBUILD
-          # Additional arguments to pass to makepkg.
-          makepkgArgs: "-march=native -mtune=native -m3dnow -m3dnowa -mfpmath=sse -Os"
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+        sudo pacman -S --noconfirm base-devel git
+        sudo pacman -S --noconfirm rust bindgen spirv-tools spirv-llvm-translator
+        sudo pacman -S --noconfirm cmake meson expat
+    - name: Build package
+      run: |
+        git clone https://github.com/DereckySany/make_archlinux_builldpkg.git
+        cd make_archlinux_builldpkg
+        makepkg -sri --noconfirm
