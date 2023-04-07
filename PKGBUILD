@@ -32,8 +32,8 @@ prepare() {
 #   export CFLAGS="-march=native -Os"
 #   export CXXFLAGS="-march=native -Os"
   # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/20449
-  export CFLAGS="-march=native -mtune=native -m3dnow -m3dnowa -mfpmath=sse -Os"
-  export CXXFLAGS="-march=native -mtune=native -m3dnow -m3dnowa -mfpmath=sse -Os"
+  export CFLAGS="-march=native -m3dnow -m3dnowa -Os "
+  export CXXFLAGS="-march=native -m3dnow -m3dnowa -Os "
 }
 
 build() {
@@ -85,7 +85,7 @@ build() {
     -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
     -D valgrind=enabled \
     -D optimization=s \
-    -D c_cpp_args="-march=native -mtune=native -m3dnow -m3dnowa -mfpmath=sse -Os"
+    -D c_cpp_args="-m3dnow -m3dnowa -Os "
 
 
   # Print config
@@ -133,7 +133,7 @@ build() {
     -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
     -D valgrind=enabled \
     -D optimization=s \
-    -D c_cpp_args="-march=native -mtune=native -m3dnow -m3dnowa -mfpmath=sse -Os"
+    -D c_cpp_args="-m3dnow -m3dnowa -Os "
 
   ninja -C build
   meson compile -C build
