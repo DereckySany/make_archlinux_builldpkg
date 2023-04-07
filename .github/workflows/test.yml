@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Makepkg Build and Check
-      - uses: edlanglois/pkgbuild-action@v1.1.8
+        uses: edlanglois/pkgbuild-action@v1.1.8
         with:
           # Relative path to directory containing the PKGBUILD file.
           pkgdir: $GITHUB_WORKSPACE/.github/workflows/PKGBUILD
