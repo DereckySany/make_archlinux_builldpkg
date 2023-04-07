@@ -15,5 +15,6 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Build and Test
       run: |
+        docker pull archlinux
         docker build -t arch-pkgbuilder .
         docker run -it --name arch-pkgbuilder-container arch-pkgbuilder
