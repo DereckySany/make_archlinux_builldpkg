@@ -19,7 +19,7 @@ makedepends+=('expat' 'git') # dependencies
 url="https://www.mesa3d.org/"
 license=('custom')
 # source=("git+https://github.com/Mesa3D/mesa.git#branch=main")
-source=("git+https://gitlab.freedesktop.org/mesa/mesa.git")
+source=("git+https://github.com/DereckySany/mesa.git#branch=main")
 sha256sums=('SKIP')
 b2sums=('SKIP')
 validpgpkeys=('SKIP') # Eric Engestrom <eric@engestrom.ch>
