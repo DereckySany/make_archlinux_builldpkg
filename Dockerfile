@@ -15,8 +15,8 @@ RUN useradd -m -G wheel user \
 
 USER user
 
-RUN wget "https://github.com/DereckySany/make_archlinux_builldpkg/blob/main/PKGBUILD" && \
-    cd /PKGBUILD \
+RUN wget "https://github.com/DereckySany/make_archlinux_builldpkg/blob/main/PKGBUILD" \
+    && ls \
     && makepkg -srif --syncdeps --noconfirm
 
 CMD ["/bin/bash"]
