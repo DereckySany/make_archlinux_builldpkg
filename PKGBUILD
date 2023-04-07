@@ -58,7 +58,7 @@ build() {
     -D gallium-va=enabled \
     -D gallium-vdpau=enabled \
     -D gallium-xa=enabled \
-    -D gallium-rusticl=true \
+    -D gallium-rusticl=false \
     -D rust_std=2021 \
     -D gbm=enabled \
     -D gles1=enabled \
@@ -83,8 +83,8 @@ build() {
     -D microsoft-clc=disabled \
     -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
     -D valgrind=enabled \
-    -D optimization=s \
-    -D c_cpp_args="-m3dnow -m3dnowa -Os "
+    -D optimization=s
+    #-D c_cpp_args="-m3dnow -m3dnowa -Os "
 
 
   # Print config
@@ -105,7 +105,7 @@ build() {
     -D gallium-va=enabled \
     -D gallium-vdpau=enabled \
     -D gallium-xa=enabled \
-    -D gallium-rusticl=true \
+    -D gallium-rusticl=false \
     -D rust_std=2021 \
     -D gbm=enabled \
     -D gles1=enabled \
@@ -130,8 +130,8 @@ build() {
     -D microsoft-clc=disabled \
     -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
     -D valgrind=enabled \
-    -D optimization=s \
-    -D c_cpp_args="-m3dnow -m3dnowa -Os "
+    -D optimization=s
+    #-D c_cpp_args="-m3dnow -m3dnowa -Os "
 
   ninja -C build
   meson compile -C build
