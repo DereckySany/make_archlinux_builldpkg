@@ -11,9 +11,7 @@ jobs:
       volumes:
         - /sys/fs/cgroup:/sys/fs/cgroup
     steps:
-      - name: Checkout code
       - uses: actions/checkout@v2
-
       - name: Build Arch Linux package
         uses: ./
         with:
