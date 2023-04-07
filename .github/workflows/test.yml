@@ -18,3 +18,8 @@ jobs:
         docker pull archlinux
         docker build -t arch-pkgbuilder .
         docker run -it --name arch-pkgbuilder-container arch-pkgbuilder
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: arch-packages
+        path: arch-packages
