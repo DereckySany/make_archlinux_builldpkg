@@ -5,7 +5,7 @@
 # Contributor: BlkSky <blksky@gmail.com>
 
 pkgbase=mesa-blksky-git
-pkgname=('vulkan-mesa-layers' 'opencl-mesa' 'vulkan-intel' 'vulkan-swrast' 'vulkan-virtio' 'libva-mesa-driver' 'mesa-vdpau' 'mesa')
+pkgname=('vulkan-mesa-layers' 'opencl-mesa' 'vulkan-intel' 'vulkan-radeon' 'vulkan-swrast' 'vulkan-virtio' 'libva-mesa-driver' 'mesa-vdpau' 'mesa')
 pkgdesc="An open-source implementation of the OpenGL specification"
 pkgver=22.3.branchpoint.1961.ge4e4ba23047
 pkgrel=1
@@ -13,11 +13,13 @@ arch=('x86_64')
 makedepends=('python-mako' 'libxml2' 'libx11' 'xorgproto' 'libdrm' 'libxshmfence' 'libxxf86vm'
              'libxdamage' 'libvdpau' 'libva' 'wayland' 'wayland-protocols' 'zstd' 'elfutils' 'llvm'
              'libomxil-bellagio' 'libclc' 'clang' 'libglvnd' 'libunwind' 'lm_sensors' 'libxrandr'
-             'systemd' 'glslang' 'vulkan-icd-loader' 'cmake' 'meson')
-# makedepends+=('rust' 'rust-bindgen' 'spirv-tools' 'spirv-llvm-translator') # rusticl dependencies
+             'systemd' 'valgrind' 'glslang' 'vulkan-icd-loader' 'directx-headers' 'cmake' 'meson')
+makedepends+=('rust' 'rust-bindgen' 'spirv-tools' 'spirv-llvm-translator') # rusticl dependencies
+makedepends+=('expat' 'git') # dependencies
 url="https://www.mesa3d.org/"
 license=('custom')
-source=("git+https://github.com/Mesa3D/mesa.git#branch=main")
+# source=("git+https://github.com/Mesa3D/mesa.git#branch=main")
+source=("git+https://gitlab.freedesktop.org/mesa/mesa.git")
 sha256sums=('SKIP')
 b2sums=('SKIP')
 validpgpkeys=('SKIP') # Eric Engestrom <eric@engestrom.ch>
@@ -30,8 +32,8 @@ prepare() {
 #   export CFLAGS="-march=native -Os"
 #   export CXXFLAGS="-march=native -Os"
   # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/20449
-  export CFLAGS="-march=silvermont -mtune=silvermont -m3dnow -m3dnowa -mssse3 -msse4.2 -mfpmath=sse -Os"
-  export CXXFLAGS="-march=silvermont -mtune=silvermont -m3dnow -m3dnowa -mssse3 -msse4.2 -mfpmath=sse -Os"
+  export CFLAGS="-march=native -mtune=native -m3dnow -m3dnowa -mfpmath=sse -Os"
+  export CXXFLAGS="-march=native -mtune=native -m3dnow -m3dnowa -mfpmath=sse -Os"
 }
 
 build() {
@@ -42,52 +44,96 @@ build() {
   arch-meson mesa build \
     -D b_ndebug=true \
     -D platforms=auto \
-    -D egl-native-platform=auto \
-    -D gallium-drivers=virgl,swrast,i915,iris,crocus,zink \
-    -D vulkan-drivers=intel,intel_hasvk,swrast,virtio-experimental \
+    -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,i915,iris,crocus,zink,d3d12 \
+    -D vulkan-drivers=amd,intel,intel_hasvk,swrast,virtio-experimental \
     -D vulkan-layers=device-select,intel-nullhw,overlay \
     -D shader-cache=auto \
     -D shader-cache-default=false \
+    -D android-libbacktrace=disabled \
     -D dri3=enabled \
     -D egl=enabled \
     -D gallium-extra-hud=true \
-    -D gallium-nine=false \
-    -D gallium-omx=auto \
+    -D gallium-nine=true \
+    -D gallium-omx=bellagio \
     -D gallium-opencl=icd \
     -D gallium-va=enabled \
-    -D gallium-vdpau=disabled \
+    -D gallium-vdpau=enabled \
     -D gallium-xa=enabled \
-    -D gallium-rusticl=false \
+    -D gallium-rusticl=true \
     -D rust_std=2021 \
     -D gbm=enabled \
-    -D gles1=auto \
-    -D gles2=auto \
+    -D gles1=enabled \
+    -D gles2=enabled \
     -D glx-read-only-text=true \
     -D glvnd=true \
     -D glx=dri \
-    -D egl=true \
+    -D egl=enabled \
     -D vulkan-beta=true \
     -D glx-direct=true \
-    -D xlib-lease=auto \
+    -D xlib-lease=enabled \
     -D tools=glsl,intel \
     -D build-tests=false \
     -D opengl=true \
-    -D libunwind=false \
+    -D libunwind=enabled \
     -D llvm=auto \
     -D shared-llvm=auto \
     -D draw-use-llvm=true \
     -D lmsensors=enabled \
-    -D osmesa=false \
+    -D osmesa=true \
     -D shared-glapi=enabled \
     -D microsoft-clc=disabled \
     -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
-    -D valgrind=disabled \
-    -D optimization=3dnowprefetch,mtune=silvermont,-march=native
-#     -D optimization=s \
+    -D valgrind=enabled \
+    -D optimization=s \
+    -D c_cpp_args="-march=native -mtune=native -m3dnow -m3dnowa -mfpmath=sse -Os"
 
 
   # Print config
-  meson configure build
+  meson configure build \
+    -D b_ndebug=true \
+    -D platforms=auto \
+    -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,i915,iris,crocus,zink,d3d12 \
+    -D vulkan-drivers=amd,intel,intel_hasvk,swrast,virtio-experimental \
+    -D vulkan-layers=device-select,intel-nullhw,overlay \
+    -D shader-cache=auto \
+    -D shader-cache-default=false \
+    -D android-libbacktrace=disabled \
+    -D dri3=enabled \
+    -D egl=enabled \
+    -D gallium-extra-hud=true \
+    -D gallium-nine=true \
+    -D gallium-omx=bellagio \
+    -D gallium-opencl=icd \
+    -D gallium-va=enabled \
+    -D gallium-vdpau=enabled \
+    -D gallium-xa=enabled \
+    -D gallium-rusticl=true \
+    -D rust_std=2021 \
+    -D gbm=enabled \
+    -D gles1=enabled \
+    -D gles2=enabled \
+    -D glx-read-only-text=true \
+    -D glvnd=true \
+    -D glx=dri \
+    -D egl=enabled \
+    -D vulkan-beta=true \
+    -D glx-direct=true \
+    -D xlib-lease=enabled \
+    -D tools=glsl,intel \
+    -D build-tests=false \
+    -D opengl=true \
+    -D libunwind=enabled \
+    -D llvm=auto \
+    -D shared-llvm=auto \
+    -D draw-use-llvm=true \
+    -D lmsensors=enabled \
+    -D osmesa=true \
+    -D shared-glapi=enabled \
+    -D microsoft-clc=disabled \
+    -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
+    -D valgrind=enabled \
+    -D optimization=s \
+    -D c_cpp_args="-march=native -mtune=native -m3dnow -m3dnowa -mfpmath=sse -Os"
 
   ninja -C build
   meson compile -C build
@@ -118,7 +164,7 @@ package_vulkan-mesa-layers() {
   _install fakeinstall/usr/lib/libVkLayer_*.so
   _install fakeinstall/usr/bin/mesa-overlay-control.py
 
-#   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
 package_opencl-mesa() {
@@ -131,7 +177,7 @@ package_opencl-mesa() {
   _install fakeinstall/usr/lib/lib*OpenCL*
   _install fakeinstall/usr/lib/gallium-pipe
 
-#   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
 package_vulkan-intel() {
@@ -143,7 +189,7 @@ package_vulkan-intel() {
   _install fakeinstall/usr/share/vulkan/icd.d/intel_*.json
   _install fakeinstall/usr/lib/libvulkan_intel*.so
 
-#   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
 package_vulkan-radeon() {
@@ -152,11 +198,11 @@ package_vulkan-radeon() {
   optdepends=('vulkan-mesa-layers: additional vulkan layers')
   provides=('vulkan-driver')
 
-#   _install fakeinstall/usr/share/drirc.d/00-radv-defaults.conf
-#   _install fakeinstall/usr/share/vulkan/icd.d/radeon_icd*.json
-#   _install fakeinstall/usr/lib/libvulkan_radeon.so
+  _install fakeinstall/usr/share/drirc.d/00-radv-defaults.conf
+  _install fakeinstall/usr/share/vulkan/icd.d/radeon_icd*.json
+  _install fakeinstall/usr/lib/libvulkan_radeon.so
 
-#   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
 package_vulkan-swrast() {
@@ -170,7 +216,7 @@ package_vulkan-swrast() {
   _install fakeinstall/usr/share/vulkan/icd.d/lvp_icd*.json
   _install fakeinstall/usr/lib/libvulkan_lvp.so
 
-#   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
 package_vulkan-virtio() {
@@ -182,7 +228,7 @@ package_vulkan-virtio() {
   _install fakeinstall/usr/share/vulkan/icd.d/virtio_icd*.json
   _install fakeinstall/usr/lib/libvulkan_virtio.so
 
-#   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
 package_libva-mesa-driver() {
@@ -193,7 +239,7 @@ package_libva-mesa-driver() {
 
   _install fakeinstall/usr/lib/dri/*_drv_video.so
 
-#   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
 package_mesa-vdpau() {
@@ -204,7 +250,7 @@ package_mesa-vdpau() {
 
   _install fakeinstall/usr/lib/vdpau
 
-#   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
 package_mesa() {
@@ -226,7 +272,7 @@ package_mesa() {
   _install fakeinstall/usr/lib/dri/*_dri.so
   _install fakeinstall/usr/bin/*
 
-#   _install fakeinstall/usr/lib/bellagio
+  _install fakeinstall/usr/lib/bellagio
   _install fakeinstall/usr/lib/d3d
   _install fakeinstall/usr/lib/lib{gbm,glapi}.so*
   _install fakeinstall/usr/lib/libOSMesa.so*
@@ -246,5 +292,5 @@ package_mesa() {
   # make sure there are no files left to install
   find fakeinstall -depth -print0 | xargs -0 rmdir
 
-#   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
