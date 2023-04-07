@@ -68,7 +68,7 @@ build() {
     -D glvnd=true \
     -D glx=dri \
     -D egl=enabled \
-    -D vulkan-beta=true \
+    -D vulkan-beta=false \
     -D glx-direct=true \
     -D xlib-lease=enabled \
     -D tools=glsl,intel \
