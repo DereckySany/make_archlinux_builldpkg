@@ -67,7 +67,7 @@ build() {
     -D glvnd=true \
     -D glx=dri \
     -D egl=enabled \
-    -D vulkan-beta=false \
+    -D vulkan-beta=true \
     -D glx-direct=true \
     -D xlib-lease=enabled \
     -D tools=glsl,intel \
@@ -96,7 +96,6 @@ build() {
     -D vulkan-layers=device-select,intel-nullhw,overlay \
     -D shader-cache=auto \
     -D shader-cache-default=false \
-    -D android-libbacktrace=disabled \
     -D dri3=enabled \
     -D egl=enabled \
     -D gallium-extra-hud=true \
