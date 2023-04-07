@@ -1,4 +1,4 @@
-FROM archlinux/base
+FROM archlinux:latest
 
 RUN pacman -Syu --noconfirm \
     && pacman -S --noconfirm \
@@ -7,7 +7,6 @@ RUN pacman -Syu --noconfirm \
        wget \
        jq \
     && pacman -Scc --noconfirm
-
 COPY PKGBUILD /PKGBUILD
 
 RUN useradd -m -G wheel user \
