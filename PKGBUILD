@@ -113,10 +113,10 @@ package_vulkan-mesa-layers() {
   conflicts=('vulkan-mesa-layer')
   replaces=('vulkan-mesa-layer')
 
-  _install fakeinstall/usr/share/vulkan/explicit_layer.d
-  _install fakeinstall/usr/share/vulkan/implicit_layer.d
-  _install fakeinstall/usr/lib/libVkLayer_*.so
-  _install fakeinstall/usr/bin/mesa-overlay-control.py
+#   _install fakeinstall/usr/share/vulkan/explicit_layer.d
+#   _install fakeinstall/usr/share/vulkan/implicit_layer.d
+#   _install fakeinstall/usr/lib/libVkLayer_*.so
+#   _install fakeinstall/usr/bin/mesa-overlay-control.py
 
   #install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
@@ -152,9 +152,9 @@ package_vulkan-radeon() {
   optdepends=('vulkan-mesa-layers: additional vulkan layers')
   provides=('vulkan-driver')
 
-  _install fakeinstall/usr/share/drirc.d/00-radv-defaults.conf
-  _install fakeinstall/usr/share/vulkan/icd.d/radeon_icd*.json
-  _install fakeinstall/usr/lib/libvulkan_radeon.so
+#   _install fakeinstall/usr/share/drirc.d/00-radv-defaults.conf
+#   _install fakeinstall/usr/share/vulkan/icd.d/radeon_icd*.json
+#   _install fakeinstall/usr/lib/libvulkan_radeon.so
 
   #install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
@@ -167,8 +167,8 @@ package_vulkan-swrast() {
   replaces=('vulkan-mesa')
   provides=('vulkan-driver')
 
-  _install fakeinstall/usr/share/vulkan/icd.d/lvp_icd*.json
-  _install fakeinstall/usr/lib/libvulkan_lvp.so
+#   _install fakeinstall/usr/share/vulkan/icd.d/lvp_icd*.json
+#   _install fakeinstall/usr/lib/libvulkan_lvp.so
 
   #install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
@@ -179,8 +179,8 @@ package_vulkan-virtio() {
   optdepends=('vulkan-mesa-layers: additional vulkan layers')
   provides=('vulkan-driver')
 
-  _install fakeinstall/usr/share/vulkan/icd.d/virtio_icd*.json
-  _install fakeinstall/usr/lib/libvulkan_virtio.so
+#   _install fakeinstall/usr/share/vulkan/icd.d/virtio_icd*.json
+#   _install fakeinstall/usr/lib/libvulkan_virtio.so
 
   #install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
