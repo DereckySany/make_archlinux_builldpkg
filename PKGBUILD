@@ -107,20 +107,6 @@ _install() {
   done
 }
 
-package_vulkan-mesa-layers() {
-  pkgdesc="Mesa's Vulkan layers"
-  depends=('libdrm' 'libxcb' 'wayland' 'python')
-  conflicts=('vulkan-mesa-layer')
-  replaces=('vulkan-mesa-layer')
-
-#   _install fakeinstall/usr/share/vulkan/explicit_layer.d
-#   _install fakeinstall/usr/share/vulkan/implicit_layer.d
-#   _install fakeinstall/usr/lib/libVkLayer_*.so
-#   _install fakeinstall/usr/bin/mesa-overlay-control.py
-
-  #install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
-}
-
 package_opencl-mesa() {
   pkgdesc="OpenCL support with clover and rusticl for mesa drivers"
   depends=('libdrm' 'libclc' 'clang' 'expat' 'spirv-llvm-translator')
@@ -142,45 +128,6 @@ package_vulkan-intel() {
 
   _install fakeinstall/usr/share/vulkan/icd.d/intel_*.json
   _install fakeinstall/usr/lib/libvulkan_intel*.so
-
-  #install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
-}
-
-package_vulkan-radeon() {
-  pkgdesc="Radeon's Vulkan mesa driver"
-  depends=('wayland' 'libx11' 'libxshmfence' 'libelf' 'libdrm' 'llvm-libs' 'systemd-libs')
-  optdepends=('vulkan-mesa-layers: additional vulkan layers')
-  provides=('vulkan-driver')
-
-#   _install fakeinstall/usr/share/drirc.d/00-radv-defaults.conf
-#   _install fakeinstall/usr/share/vulkan/icd.d/radeon_icd*.json
-#   _install fakeinstall/usr/lib/libvulkan_radeon.so
-
-  #install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
-}
-
-package_vulkan-swrast() {
-  pkgdesc="Vulkan software rasteriser driver"
-  depends=('wayland' 'libx11' 'libxshmfence' 'libdrm' 'zstd' 'llvm-libs' 'systemd-libs' 'libunwind')
-  optdepends=('vulkan-mesa-layers: additional vulkan layers')
-  conflicts=('vulkan-mesa')
-  replaces=('vulkan-mesa')
-  provides=('vulkan-driver')
-
-#   _install fakeinstall/usr/share/vulkan/icd.d/lvp_icd*.json
-#   _install fakeinstall/usr/lib/libvulkan_lvp.so
-
-  #install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
-}
-
-package_vulkan-virtio() {
-  pkgdesc="Venus Vulkan mesa driver for Virtual Machines"
-  depends=('wayland' 'libx11' 'libxshmfence' 'libdrm' 'zstd' 'systemd-libs')
-  optdepends=('vulkan-mesa-layers: additional vulkan layers')
-  provides=('vulkan-driver')
-
-#   _install fakeinstall/usr/share/vulkan/icd.d/virtio_icd*.json
-#   _install fakeinstall/usr/lib/libvulkan_virtio.so
 
   #install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
@@ -224,10 +171,10 @@ package_mesa() {
 
   # ati-dri, nouveau-dri, intel-dri, svga-dri, swrast, swr
   _install fakeinstall/usr/lib/dri/*_dri.so
-#   _install fakeinstall/usr/bin/*
+  #_install fakeinstall/usr/bin/*
 
-#   _install fakeinstall/usr/lib/bellagio
-#   _install fakeinstall/usr/lib/d3d
+  #_install fakeinstall/usr/lib/bellagio
+  #_install fakeinstall/usr/lib/d3d
   _install fakeinstall/usr/lib/lib{gbm,glapi}.so*
   _install fakeinstall/usr/lib/libOSMesa.so*
   _install fakeinstall/usr/lib/libxatracker.so*
@@ -238,7 +185,7 @@ package_mesa() {
   # libglvnd support
   _install fakeinstall/usr/lib/libGLX_mesa.so*
   _install fakeinstall/usr/lib/libEGL_mesa.so*
-#   _install fakeinstall/usr/lib/lib*so
+  #_install fakeinstall/usr/lib/lib*so
 
   # indirect rendering
   ln -s /usr/lib/libGLX_mesa.so.0 "${pkgdir}/usr/lib/libGLX_indirect.so.0"
