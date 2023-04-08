@@ -162,7 +162,7 @@ package_vulkan-mesa-layers() {
   _install fakeinstall/usr/lib/libVkLayer_*.so
   _install fakeinstall/usr/bin/mesa-overlay-control.py
 
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+  #install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
 package_opencl-mesa() {
@@ -175,7 +175,7 @@ package_opencl-mesa() {
   _install fakeinstall/usr/lib/lib*OpenCL*
   _install fakeinstall/usr/lib/gallium-pipe
 
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+  #install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
 package_vulkan-intel() {
@@ -187,7 +187,7 @@ package_vulkan-intel() {
   _install fakeinstall/usr/share/vulkan/icd.d/intel_*.json
   _install fakeinstall/usr/lib/libvulkan_intel*.so
 
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+  #install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
 package_vulkan-radeon() {
@@ -200,7 +200,7 @@ package_vulkan-radeon() {
   _install fakeinstall/usr/share/vulkan/icd.d/radeon_icd*.json
   _install fakeinstall/usr/lib/libvulkan_radeon.so
 
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+  #install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
 package_vulkan-swrast() {
@@ -214,7 +214,7 @@ package_vulkan-swrast() {
   _install fakeinstall/usr/share/vulkan/icd.d/lvp_icd*.json
   _install fakeinstall/usr/lib/libvulkan_lvp.so
 
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+  #install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
 package_vulkan-virtio() {
@@ -226,7 +226,7 @@ package_vulkan-virtio() {
   _install fakeinstall/usr/share/vulkan/icd.d/virtio_icd*.json
   _install fakeinstall/usr/lib/libvulkan_virtio.so
 
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+  #install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
 package_libva-mesa-driver() {
@@ -237,7 +237,7 @@ package_libva-mesa-driver() {
 
   _install fakeinstall/usr/lib/dri/*_drv_video.so
 
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+  #install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
 package_mesa-vdpau() {
@@ -248,7 +248,7 @@ package_mesa-vdpau() {
 
   _install fakeinstall/usr/lib/vdpau
 
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+  #install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
 package_mesa() {
@@ -290,5 +290,5 @@ package_mesa() {
   # make sure there are no files left to install
   find fakeinstall -depth -print0 | xargs -0 rmdir
 
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+  #install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
