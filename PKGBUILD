@@ -44,8 +44,8 @@ build() {
   arch-meson mesa build \
     -D b_ndebug=true \
     -D platforms=auto \
-    -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,i915,iris,crocus,zink,d3d12 \
-    -D vulkan-drivers=amd,intel,intel_hasvk,swrast,virtio-experimental \
+    -D gallium-drivers=auto,virgl,svga,swrast,i915,iris,crocus,zink,d3d12 \
+    -D vulkan-drivers=intel,intel_hasvk,swrast,virtio-experimental \
     -D vulkan-layers=device-select,intel-nullhw,overlay \
     -D shader-cache=auto \
     -D shader-cache-default=false \
@@ -82,7 +82,7 @@ build() {
     -D shared-glapi=enabled \
     -D microsoft-clc=disabled \
     -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
-    -D valgrind=enabled \
+    -D valgrind=disabled \
     -D optimization=s \
     -D c_cpp_args="-m3dnow -m3dnowa -Os "
 
@@ -91,8 +91,8 @@ build() {
   meson configure build \
     -D b_ndebug=true \
     -D platforms=auto \
-    -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,i915,iris,crocus,zink,d3d12 \
-    -D vulkan-drivers=amd,intel,intel_hasvk,swrast,virtio-experimental \
+    -D gallium-drivers=auto,virgl,svga,swrast,i915,iris,crocus,zink,d3d12 \
+    -D vulkan-drivers=intel,intel_hasvk,swrast,virtio-experimental \
     -D vulkan-layers=device-select,intel-nullhw,overlay \
     -D shader-cache=auto \
     -D shader-cache-default=false \
@@ -129,7 +129,7 @@ build() {
     -D shared-glapi=enabled \
     -D microsoft-clc=disabled \
     -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
-    -D valgrind=enabled \
+    -D valgrind=disabled \
     -D optimization=s \
     -D c_cpp_args="-m3dnow -m3dnowa -Os "
 
