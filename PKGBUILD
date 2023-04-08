@@ -5,7 +5,7 @@
 # Contributor: BlkSky <blksky@gmail.com>
 
 pkgbase=mesa-blksky-git
-pkgname=('vulkan-mesa-layers' 'opencl-mesa' 'vulkan-intel' 'vulkan-radeon' 'vulkan-swrast' 'vulkan-virtio' 'libva-mesa-driver' 'mesa-vdpau' 'mesa')
+pkgname=( 'opencl-mesa' 'vulkan-intel' 'libva-mesa-driver' 'mesa-vdpau' 'mesa')
 pkgdesc="An open-source implementation of the OpenGL specification"
 pkgver=22.3.branchpoint.1961.ge4e4ba23047
 pkgrel=1
@@ -32,8 +32,8 @@ prepare() {
 #   export CFLAGS="-march=native -Os"
 #   export CXXFLAGS="-march=native -Os"
   # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/20449
-  export CFLAGS="-march=native -m3dnow -m3dnowa -Os "
-  export CXXFLAGS="-march=native -m3dnow -m3dnowa -Os "
+  export CFLAGS="-march=native -mtune=native -m3dnow -m3dnowa -mfpmath=sse -Os"
+  export CXXFLAGS="-march=native -mtune=native -m3dnow -m3dnowa -mfpmath=sse -Os"
 }
 
 build() {
@@ -42,96 +42,52 @@ build() {
   CXXFLAGS+=' -g1'
 
   arch-meson mesa build \
-    -D b_ndebug=true \
-    -D platforms=auto \
-    -D gallium-drivers=auto,virgl,svga,swrast,i915,iris,crocus,zink,d3d12 \
-    -D vulkan-drivers=intel,intel_hasvk,swrast,virtio-experimental \
-    -D vulkan-layers=device-select,intel-nullhw,overlay \
-    -D shader-cache=auto \
-    -D shader-cache-default=false \
-    -D dri3=enabled \
-    -D egl=enabled \
-    -D gallium-extra-hud=true \
-    -D gallium-nine=true \
-    -D gallium-omx=bellagio \
-    -D gallium-opencl=icd \
-    -D gallium-va=enabled \
-    -D gallium-vdpau=enabled \
-    -D gallium-xa=enabled \
-    -D gallium-rusticl=true \
-    -D rust_std=2021 \
-    -D gbm=enabled \
-    -D gles1=enabled \
-    -D gles2=enabled \
-    -D glx-read-only-text=true \
-    -D glvnd=true \
-    -D glx=dri \
-    -D egl=enabled \
-    -D vulkan-beta=true \
-    -D glx-direct=true \
-    -D xlib-lease=enabled \
-    -D tools=glsl,intel \
-    -D build-tests=false \
-    -D opengl=true \
-    -D libunwind=enabled \
-    -D llvm=auto \
-    -D shared-llvm=auto \
-    -D draw-use-llvm=true \
-    -D lmsensors=enabled \
-    -D osmesa=true \
-    -D shared-glapi=enabled \
-    -D microsoft-clc=disabled \
-    -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
-    -D valgrind=disabled \
-    -D optimization=s \
-    -D c_cpp_args="-m3dnow -m3dnowa -Os "
+    -Dvulkan-drivers=intel,intel_hasvk \
+    -Dgallium-drivers=auto,virgl,i915,crocus,zink \
+    -Dgallium-nine=false \
+    -Dgallium-opencl=icd \
+    -Dglx=dri \
+    -Dgbm=true \
+    -Dglx-direct=true \
+    -Degl=true \
+    -Dopengl=true \
+    -Dosmesa=true \
+    -Dgles1=true \
+    -Dgles2=true \
+    -Dvalgrind=false \
+    -Dlmsensors=true \
+    -Dbuild-tests=false \
+    -Dllvm=true \
+    -Dshared-glapi=true \
+    -Dvideo-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
+    -Dglvnd=true \
+    -Doptimization=s \
+    -Dc_cpp_args="-march=native -mtune=native -m3dnow -m3dnowa -mfpmath=sse -Os"
 
 
   # Print config
   meson configure build \
-    -D b_ndebug=true \
-    -D platforms=auto \
-    -D gallium-drivers=auto,virgl,svga,swrast,i915,iris,crocus,zink,d3d12 \
-    -D vulkan-drivers=intel,intel_hasvk,swrast,virtio-experimental \
-    -D vulkan-layers=device-select,intel-nullhw,overlay \
-    -D shader-cache=auto \
-    -D shader-cache-default=false \
-    -D dri3=enabled \
-    -D egl=enabled \
-    -D gallium-extra-hud=true \
-    -D gallium-nine=true \
-    -D gallium-omx=bellagio \
-    -D gallium-opencl=icd \
-    -D gallium-va=enabled \
-    -D gallium-vdpau=enabled \
-    -D gallium-xa=enabled \
-    -D gallium-rusticl=true \
-    -D rust_std=2021 \
-    -D gbm=enabled \
-    -D gles1=enabled \
-    -D gles2=enabled \
-    -D glx-read-only-text=true \
-    -D glvnd=true \
-    -D glx=dri \
-    -D egl=enabled \
-    -D vulkan-beta=true \
-    -D glx-direct=true \
-    -D xlib-lease=enabled \
-    -D tools=glsl,intel \
-    -D build-tests=false \
-    -D opengl=true \
-    -D libunwind=enabled \
-    -D llvm=auto \
-    -D shared-llvm=auto \
-    -D draw-use-llvm=true \
-    -D lmsensors=enabled \
-    -D osmesa=true \
-    -D shared-glapi=enabled \
-    -D microsoft-clc=disabled \
-    -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
-    -D valgrind=disabled \
-    -D optimization=s \
-    -D c_cpp_args="-m3dnow -m3dnowa -Os "
+    -Dvulkan-drivers=intel,intel_hasvk \
+    -Dgallium-drivers=auto,virgl,i915,crocus,zink \
+    -Dgallium-nine=false \
+    -Dgallium-opencl=icd \
+    -Dglx=dri \
+    -Dgbm=true \
+    -Dglx-direct=true \
+    -Degl=true \
+    -Dopengl=true \
+    -Dosmesa=true \
+    -Dgles1=true \
+    -Dgles2=true \
+    -Dvalgrind=false \
+    -Dlmsensors=true \
+    -Dbuild-tests=false \
+    -Dllvm=true \
+    -Dshared-glapi=true \
+    -Dvideo-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
+    -Dglvnd=true \
+    -Doptimization=s \
+    -Dc_cpp_args="-march=native -mtune=native -m3dnow -m3dnowa -mfpmath=sse -Os"
 
   ninja -C build
   meson compile -C build
@@ -268,10 +224,10 @@ package_mesa() {
 
   # ati-dri, nouveau-dri, intel-dri, svga-dri, swrast, swr
   _install fakeinstall/usr/lib/dri/*_dri.so
-  _install fakeinstall/usr/bin/*
+#   _install fakeinstall/usr/bin/*
 
-  _install fakeinstall/usr/lib/bellagio
-  _install fakeinstall/usr/lib/d3d
+#   _install fakeinstall/usr/lib/bellagio
+#   _install fakeinstall/usr/lib/d3d
   _install fakeinstall/usr/lib/lib{gbm,glapi}.so*
   _install fakeinstall/usr/lib/libOSMesa.so*
   _install fakeinstall/usr/lib/libxatracker.so*
@@ -282,7 +238,7 @@ package_mesa() {
   # libglvnd support
   _install fakeinstall/usr/lib/libGLX_mesa.so*
   _install fakeinstall/usr/lib/libEGL_mesa.so*
-  _install fakeinstall/usr/lib/lib*so
+#   _install fakeinstall/usr/lib/lib*so
 
   # indirect rendering
   ln -s /usr/lib/libGLX_mesa.so.0 "${pkgdir}/usr/lib/libGLX_indirect.so.0"
